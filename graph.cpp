@@ -26,7 +26,7 @@ graph<D, K>::graph(vector<K> keys, vector<D> data, vector<vector<K>> edges)
 // Preconditions: 
 // Postconditions: 
 //=========================================================================
-
+template <class D, class K>
 
 //=========================================================================
 // reachable
@@ -36,7 +36,7 @@ graph<D, K>::graph(vector<K> keys, vector<D> data, vector<vector<K>> edges)
 // Preconditions: 
 // Postconditions: 
 //=========================================================================
-
+template <class D, class K>
 
 //=========================================================================
 // bfs
@@ -46,7 +46,7 @@ graph<D, K>::graph(vector<K> keys, vector<D> data, vector<vector<K>> edges)
 // Preconditions: 
 // Postconditions: 
 //=========================================================================
-
+template <class D, class K>
 
 //=========================================================================
 // print_path
@@ -56,7 +56,7 @@ graph<D, K>::graph(vector<K> keys, vector<D> data, vector<vector<K>> edges)
 // Preconditions: 
 // Postconditions: 
 //=========================================================================
-
+template <class D, class K>
 
 //=========================================================================
 // edge_class
@@ -66,7 +66,7 @@ graph<D, K>::graph(vector<K> keys, vector<D> data, vector<vector<K>> edges)
 // Preconditions: 
 // Postconditions: 
 //=========================================================================
-
+template <class D, class K>
 
 //=========================================================================
 // bfs_tree
@@ -76,4 +76,4 @@ graph<D, K>::graph(vector<K> keys, vector<D> data, vector<vector<K>> edges)
 // Preconditions: 
 // Postconditions: 
 //=========================================================================
-
+template <class D, class K>
