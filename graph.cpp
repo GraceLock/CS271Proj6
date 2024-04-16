@@ -49,7 +49,7 @@ template <class D, class K>
 template <class D, class K>
 void bfs(K k)
 {
-
+    
 }
 
 //=========================================================================

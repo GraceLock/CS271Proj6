@@ -21,6 +21,8 @@ class graph
         int color;
     };
 
+    vector<Vertex> vertices;
+
     public:
         graph(vector<K> keys, vector<D> data, vector<vector<K>> edges);
         *Vertex get(const k);
