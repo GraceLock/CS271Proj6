@@ -47,6 +47,10 @@ template <class D, class K>
 // Postconditions: 
 //=========================================================================
 template <class D, class K>
+void bfs(K k)
+{
+
+}
 
 //=========================================================================
 // print_path
@@ -57,6 +61,18 @@ template <class D, class K>
 // Postconditions: 
 //=========================================================================
 template <class D, class K>
+void print_path(K s, K v)
+{
+    if v == s
+        cout << s->key << endl;
+    else if ( v->pi == nullptr){
+        return; 
+    }
+    else{
+        print_path(s, v->pi);
+        cout << v->key << "->"; 
+    }
+}
 
 //=========================================================================
 // edge_class

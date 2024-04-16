@@ -18,6 +18,7 @@ class graph
         D data;
         int d;
         K pi;
+        int color;
     };
 
     public:
@@ -25,7 +26,7 @@ class graph
         *Vertex get(const k);
         bool reachable(K u, K v);
         void bfs(K k);
-        void print_path(K u, K v);
+        void print_path(K s, K v);
         string edge_class(K u, K v);
         void bfs_tree(K k);
 };
