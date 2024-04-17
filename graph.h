@@ -1,7 +1,6 @@
 #include <iostream>
 #include <string>
 #include <sstream>
-#include "graph.cpp"
 
 using namespace std;
 
@@ -9,7 +8,7 @@ using namespace std;
 #define GRAPH_H
 
 template <class D, class K>
-class graph
+class Graph
 {
     private:
         struct Vertex
@@ -25,8 +24,9 @@ class graph
     vector<Vertex> vertices;
 
     public:
-        graph(vector<K> keys, vector<D> data, vector<vector<K>> edges);
-        *Vertex<D, K> get(const k);
+        Graph(vector<K> keys, vector<D> data, vector<vector<K>> edges);
+
+        Vertex<D, K>* get(const k);
         bool reachable(K u, K v);
         void bfs(K k);
         void print_path(K s, K v);

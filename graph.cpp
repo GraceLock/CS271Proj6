@@ -13,8 +13,9 @@ using namespace std;
 // Preconditions: 
 // Postconditions: 
 //=========================================================================
+
 template <class D, class K>
-graph<D, K>::graph(vector<K> keys, vector<D> data, vector<vector<K>> edges)
+Graph<D, K>::Graph(vector<K> keys, vector<D> data, vector<vector<K>> edges)
 {
     // Initialize vertices
     for (size_t i = 0; i < keys.size(); ++i) {
@@ -39,10 +40,11 @@ graph<D, K>::graph(vector<K> keys, vector<D> data, vector<vector<K>> edges)
 // Preconditions: 
 // Postconditions: 
 //=========================================================================
+
 template <class D, class K>
-typename graph<D, K>::Vertex* graph<D, K>::get(K k)
+typename Graph<D, K>::Vertex* get(K k)
 {
-    this.BFS();
+    this.bfs();
 
     for (size_t i = 0; i < vertices.size(); ++i) {
         if (vertices[i].key == k) {
