@@ -61,6 +61,28 @@ typename graph<D, K>::Vertex* graph<D, K>::get(K k)
 // Postconditions: 
 //=========================================================================
 template <class D, class K>
+bool graph<D, K>::reachable(K u, K v)
+{
+    // Finding the vertices with keys u and v
+    Vertex* startVertex = get(u);
+    Vertex* targetVertex = get(v);
+
+    // If either startVertex or targetVertex is not found, return false
+    if (startVertex == nullptr || targetVertex == nullptr) {
+        return false;
+    }
+
+    BST();
+
+    //Start at v and transeverse through the predecessors until u is found or nullptr
+    while (targetVertex->pi != nullptr && targetVertex->pi != u){
+        targetVertex = targetVertex->pi;
+    }
+    if(targetVertex->pi == u)
+        return true;
+    else    
+        return false;
+}
 
 //=========================================================================
 // bfs
