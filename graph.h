@@ -19,13 +19,14 @@ class graph
         int d;
         K pi;
         int color;
+        vector<K> adjList;
     };
 
     vector<Vertex> vertices;
 
     public:
         graph(vector<K> keys, vector<D> data, vector<vector<K>> edges);
-        *Vertex get(const k);
+        *Vertex<D, K> get(const k);
         bool reachable(K u, K v);
         void bfs(K k);
         void print_path(K s, K v);
