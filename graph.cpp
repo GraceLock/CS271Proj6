@@ -16,19 +16,19 @@ using namespace std;
 //=========================================================================
 
 template <class D, class K>
-Graph<D, K>::Graph(vector<K> keys, vector<D> data, vector<vector<K>> edges)
+Graph<D, K>::Graph(vector<K> keys, vector<D> data, vector<vector<K> > edges)
 {
     // Initialize vertices
     for (size_t i = 0; i < keys.size(); ++i) {
         Vertex v;
-        v->key = keys[i];
-        v->data = data[i];
-        v->color = 0; // 0 for white
-        v->d = INT_MAX; // Distance from start vertex
-        v->pi = -1; // Parent
+        v.key = keys[i];
+        v.data = data[i];
+        v.color = 0; // 0 for white
+        v.d = INT_MAX; // Distance from start vertex
+        v.pi = -1; // Parent
         vertices.push_back(v);
 
-        adjList[v->key] = edges[i]; //intiallize adjacency list
+        adjList[v.key] = edges[i]; //intiallize adjacency list
     }
 }
 
@@ -40,9 +40,8 @@ Graph<D, K>::Graph(vector<K> keys, vector<D> data, vector<vector<K>> edges)
 // Preconditions: 
 // Postconditions: 
 //=========================================================================
-
 template <class D, class K>
-typename Graph<D, K>::Vertex* get(K k)
+typename Graph<D, K>::Vertex* Graph<D, K>::get(const K k)
 {
     for (size_t i = 0; i < vertices.size(); ++i) {
         if (vertices[i].key == k) {
@@ -72,7 +71,7 @@ bool Graph<D, K>::reachable(K u, K v)
         return false;
     }
 
-    for(int i = 0; i < len(vertices); i++){
+    for(int i = 0; i < vertices.size(); i++){
         vertices[i]->color = 1;
         vertices[i]->d = -1;
         vertices[i]->pi = nullptr;
@@ -82,25 +81,25 @@ bool Graph<D, K>::reachable(K u, K v)
     startVertex->pi = nullptr;
 
     queue<K> Q;
-    Q.push(s);
+    Q.push(startVertex.key);
     while(!Q.empty()){
-        Vertex x = Q.front();
+        Vertex x = get(Q.front());
         Q.pop();
-        for(int i = 0; i < len(x->adjList); i++){ 
+        for(int i = 0; i < (x->adjList).size(); i++){ 
             Vertex y = get(adjList[i]);
             if (y == targetVertex)
                 return true;
-            if (y->color == 1){
-                y->color = 2;
-                y->d = x->d + 1;
-                y->pi = x->key;
-                Q.push(y)
+            if (y.color == 1){
+                y.color = 2;
+                y.d = x.d + 1;
+                y.pi = x.key;
+                Q.push(y.key);
             }
         }
     }
     return false;
 }
-
+/*
 //=========================================================================
 // bfs
 
@@ -181,3 +180,4 @@ template <class D, class K>
 // Postconditions: 
 //=========================================================================
 template <class D, class K>
+*/

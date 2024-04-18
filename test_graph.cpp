@@ -1,3 +1,10 @@
+//
+//  test_graph_example.cpp
+//  CS 271 Graph Project: Example Test File
+//
+//  Created by Dr. Stacey Truex
+//
+
 #include <fstream>
 #include <sstream>
 #include "graph.cpp"
@@ -6,9 +13,9 @@ Graph<string, string> *generate_graph(string fname)
 {
     string line;
     ifstream infile(fname);
-    vector<string> keys = {};
-    vector<string> data = {};
-    vector<vector<string>> adjs = {};
+    vector<string> keys;
+    vector<string> data;
+    vector<vector<string> > adjs;
     if (infile.is_open())
     {
         while (getline(infile, line))
@@ -20,7 +27,7 @@ Graph<string, string> *generate_graph(string fname)
             keys.push_back(key);
             data.push_back(key + " data");
             delim = adj.find(",");
-            vector<string> adj_lst = {};
+            vector<string> adj_lst;
             while (delim != string::npos)
             {
                 adj_lst.push_back(adj.substr(0, delim));
@@ -77,7 +84,7 @@ void test_reachable(Graph<string, string> *G)
         cerr << "Error testing reachable : " << e.what() << endl;
     }
 }
-
+/*
 void test_bfs(Graph<string, string> *G)
 {
     try
@@ -173,17 +180,17 @@ void test_bfs_tree(Graph<string, string> *G)
         cerr << "Error testing bfs tree : " << e.what() << endl;
     }
 }
-
+*/
 int main()
 {
 
     Graph<string, string> *G = generate_graph("graph_description.txt");
     test_get(G);
     test_reachable(G);
-    test_bfs(G);
-    test_print_path(G);
-    test_edge_class(G);
-    test_bfs_tree(G);
+    //test_bfs(G);
+    //test_print_path(G);
+    //test_edge_class(G);
+    //test_bfs_tree(G);
 
     cout << "Testing completed" << endl;
 

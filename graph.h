@@ -23,12 +23,12 @@ class Graph
     };
 
     vector<Vertex> vertices;
-    unordered_map<D, K> adjList;
+    unordered_map<K, vector<K> > adjList;
 
     public:
-        Graph(vector<K> keys, vector<D> data, vector<vector<K>> edges);
+        Graph(vector<K> keys, vector<D> data, vector<vector<K> > edges);
 
-        Vertex<D, K>* get(const k);
+        typename Graph<D, K>::Vertex* get(const K k);
         bool reachable(K u, K v);
         void bfs(K k);
         void print_path(K s, K v);
