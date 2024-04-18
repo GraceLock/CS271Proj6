@@ -73,28 +73,28 @@ bool Graph<D, K>::reachable(K u, K v)
     }
 
     for(int i = 0; i < vertices.size(); i++){
-        vertices[i]->color = 1;
-        vertices[i]->d = -1;
-        vertices[i]->pi = nullptr;
+        vertices[i].color = 1;
+        vertices[i].d = -1;
+        vertices[i].pi = nullptr;
     }
     startVertex->color = 1;
     startVertex->d = 0;
     startVertex->pi = nullptr;
 
     queue<K> Q;
-    Q.push(startVertex.key);
+    Q.push(startVertex->key);
     while(!Q.empty()){
-        Vertex x = get(Q.front());
+        Vertex* x = get(Q.front());
         Q.pop();
-        for(int i = 0; i < (x->adjList).size(); i++){ 
-            Vertex y = get(adjList[i]);
+        for(auto it = adjList.begin(); it != adjList.end(); ++it){ 
+            Vertex* y = get(it->first);
             if (y == targetVertex)
                 return true;
-            if (y.color == 1){
-                y.color = 2;
-                y.d = x.d + 1;
-                y.pi = x.key;
-                Q.push(y.key);
+            if (y->color == 1){
+                y->color = 2;
+                y->d = x->d + 1;
+                y->pi = x->key;
+                Q.push(y->key);
             }
         }
     }
