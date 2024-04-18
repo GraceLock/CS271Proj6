@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <queue>
+#include <unordered_map>
 #include "graph.h"
 
 using namespace std;
@@ -20,16 +21,15 @@ Graph<D, K>::Graph(vector<K> keys, vector<D> data, vector<vector<K>> edges)
     // Initialize vertices
     for (size_t i = 0; i < keys.size(); ++i) {
         Vertex v;
-        v.key = keys[i];
-        v.data = data[i];
-        v.color = 0; // 0 for white (unvisited)
-        v.d = INT_MAX; // Distance from start vertex
-        v.pi = -1; // Parent
+        v->key = keys[i];
+        v->data = data[i];
+        v->color = 0; // 0 for white
+        v->d = INT_MAX; // Distance from start vertex
+        v->pi = -1; // Parent
         vertices.push_back(v);
+
+        adjList[v->key] = edges[i]; //intiallize adjacency list
     }
-
-    //initialize adjacency list
-
 }
 
 //=========================================================================
@@ -44,8 +44,6 @@ Graph<D, K>::Graph(vector<K> keys, vector<D> data, vector<vector<K>> edges)
 template <class D, class K>
 typename Graph<D, K>::Vertex* get(K k)
 {
-    this.bfs();
-
     for (size_t i = 0; i < vertices.size(); ++i) {
         if (vertices[i].key == k) {
             return &vertices[i];
@@ -63,7 +61,7 @@ typename Graph<D, K>::Vertex* get(K k)
 // Postconditions: 
 //=========================================================================
 template <class D, class K>
-bool graph<D, K>::reachable(K u, K v)
+bool Graph<D, K>::reachable(K u, K v)
 {
     // Finding the vertices with keys u and v
     Vertex* startVertex = get(u);
@@ -74,16 +72,33 @@ bool graph<D, K>::reachable(K u, K v)
         return false;
     }
 
-    BST();
-
-    //Start at v and transeverse through the predecessors until u is found or nullptr
-    while (targetVertex->pi != nullptr && targetVertex->pi != u){
-        targetVertex = targetVertex->pi;
+    for(int i = 0; i < len(vertices); i++){
+        vertices[i]->color = 1;
+        vertices[i]->d = -1;
+        vertices[i]->pi = nullptr;
     }
-    if(targetVertex->pi == u)
-        return true;
-    else    
-        return false;
+    startVertex->color = 1;
+    startVertex->d = 0;
+    startVertex->pi = nullptr;
+
+    queue<K> Q;
+    Q.push(s);
+    while(!Q.empty()){
+        Vertex x = Q.front();
+        Q.pop();
+        for(int i = 0; i < len(x->adjList); i++){ 
+            Vertex y = get(adjList[i]);
+            if (y == targetVertex)
+                return true;
+            if (y->color == 1){
+                y->color = 2;
+                y->d = x->d + 1;
+                y->pi = x->key;
+                Q.push(y)
+            }
+        }
+    }
+    return false;
 }
 
 //=========================================================================
@@ -97,7 +112,7 @@ bool graph<D, K>::reachable(K u, K v)
 template <class D, class K>
 void bfs(K k)
 {
-    s = this.get(k);
+    Vertex s = this.get(k);
 
     for(int i = 0; i < len(vertices); i++){
         vertices[i]->color = 1;
@@ -136,7 +151,7 @@ void bfs(K k)
 template <class D, class K>
 void print_path(K s, K v)
 {
-    if v == s
+    if (v == s)
         cout << s->key << endl;
     else if ( v->pi == nullptr){
         return; 

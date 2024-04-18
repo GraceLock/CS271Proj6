@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <unordered_map>
 
 using namespace std;
 
@@ -18,10 +19,11 @@ class Graph
         int d;
         K pi;
         int color;
-        vector<K> adjList;
+        //vector<K> adjList;
     };
 
     vector<Vertex> vertices;
+    unordered_map<D, K> adjList;
 
     public:
         Graph(vector<K> keys, vector<D> data, vector<vector<K>> edges);
