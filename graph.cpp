@@ -60,6 +60,7 @@ typename Graph<D, K>::Vertex* get(K k)
 // Preconditions: 
 // Postconditions: 
 //=========================================================================
+
 template <class D, class K>
 bool Graph<D, K>::reachable(K u, K v)
 {
@@ -109,8 +110,9 @@ bool Graph<D, K>::reachable(K u, K v)
 // Preconditions: 
 // Postconditions: 
 //=========================================================================
+
 template <class D, class K>
-void bfs(K k)
+void Graph<D, K>::bfs(K k)
 {
     Vertex s = this.get(k);
 
@@ -148,8 +150,9 @@ void bfs(K k)
 // Preconditions: 
 // Postconditions: 
 //=========================================================================
+
 template <class D, class K>
-void print_path(K s, K v)
+void Graph<D, K>::print_path(K s, K v)
 {
     if (v == s)
         cout << s->key << endl;
