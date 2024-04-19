@@ -16,7 +16,7 @@ class Graph
     {
         K key;
         D data;
-        int d;
+        int distance;
         K pi;
         int color;
         //vector<K> adjList;

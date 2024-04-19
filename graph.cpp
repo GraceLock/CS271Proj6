@@ -24,7 +24,7 @@ Graph<D, K>::Graph(vector<K> keys, vector<D> data, vector<vector<K> > edges)
         v.key = keys[i];
         v.data = data[i];
         v.color = 0; // 0 for white
-        v.d = INT_MAX; // Distance from start vertex
+        v.distance = -1; // Distance from start vertex
         v.pi = K(); // Parent
         vertices.push_back(v);
 
@@ -51,7 +51,7 @@ typename Graph<D, K>::Vertex* Graph<D, K>::get(const K k)
     }
     return nullptr; // Return nullptr if vertex with key k not found
 }
-/*
+
 //=========================================================================
 // reachable
 
@@ -64,7 +64,7 @@ typename Graph<D, K>::Vertex* Graph<D, K>::get(const K k)
 template <class D, class K>
 bool Graph<D, K>::reachable(K u, K v)
 {
-    BFS(u);
+    bfs(u);
 
     // Finding the vertices with keys u and v
     Vertex* startVertex = get(u);
@@ -75,10 +75,7 @@ bool Graph<D, K>::reachable(K u, K v)
         return false;
     }
 
-    if(adjList[targetVertex->color == 2]) //if v's color is black it is reachable
-        return true;
-    else 
-        return false; //v's color is not black and v is not reachable 
+    return targetVertex->color == 2; // Return true if v is black (reachable), false otherwise 
 }
 
 //=========================================================================
@@ -96,29 +93,31 @@ void Graph<D, K>::bfs(K k)
     Vertex* s = get(k);
 
     for(int i = 0; i < vertices.size(); i++){
-        vertices[i]->color = 1;
-        vertices[i]->d = -1;
-        vertices[i]->pi = nullptr;
+        vertices[i].color = 0;
+        vertices[i].distance = -1;
+        vertices[i].pi = K();
     }
+    
     s->color = 1;
-    s->d = 0;
-    s->pi = nullptr;
-
+    s->distance = 0;
+    s->pi = K();
+    
     queue<K> Q;
-    Q.push(s);
+    Q.push(s->key);
     while(!Q.empty()){
-        Vertex* x = Q.front();
+        K a = Q.front();
+        Vertex* u = get(a);
         Q.pop();
-        for(int i = 0; i < (x->adjList).size(); i++){ 
-            Vertex* v = get(adjList[i]);
+        for(int i = 0; i < adjList[u->key].size(); i++){ 
+            Vertex* v = get(adjList[u->key][i]);
             if (v->color == 0){
                 v->color = 1; // 1 for gray 
-                v->d = x->d + 1;
-                v->pi = x->key;
-                Q.push(v);
+                v->distance = u->distance + 1;
+                v->pi = u->key;
+                Q.push(v->key);
             }
         }
-        x->color = 2; // 2 for black 
+        u->color = 2; // 2 for black 
     }
 }
 
@@ -138,16 +137,16 @@ void Graph<D, K>::print_path(K s, K v)
     Vertex* y = get(v);
 
     if (y->key == x->key)
-        cout << x->key << endl;
+        cout << x->key;
     else if ( y->pi == K() ){
         return; 
     }
     else{
         print_path(s, y->pi);
-        cout << y->key << "->"; 
+        cout << " -> " << y->key; 
     }
 }
-
+/*
 //=========================================================================
 // edge_class
 
