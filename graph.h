@@ -22,8 +22,8 @@ class Graph
         //vector<K> adjList;
     };
 
-    vector<Vertex> vertices;
-    unordered_map<K, vector<K> > adjList;
+    //vector<Vertex> vertices;
+    unordered_map<Vertex, vector<Vertex> > adjList;
 
     public:
         Graph(vector<K> keys, vector<D> data, vector<vector<K> > edges);
