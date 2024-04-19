@@ -26,6 +26,7 @@ Graph<D, K>::Graph(vector<K> keys, vector<D> data, vector<vector<K> > edges)
         v.color = 0; // 0 for white
         v.distance = -1; // Distance from start vertex
         v.pi = K(); // Parent
+        v.f = 0;
         vertices.push_back(v);
 
         adjList[keys[i]] = edges[i]; //intiallize adjacency list
@@ -146,7 +147,7 @@ void Graph<D, K>::print_path(K s, K v)
         cout << " -> " << y->key; 
     }
 }
-/*
+
 //=========================================================================
 // edge_class
 
@@ -156,6 +157,10 @@ void Graph<D, K>::print_path(K s, K v)
 // Postconditions: 
 //=========================================================================
 template <class D, class K>
+string Graph<D, K>::edge_class(K u, K v)
+{
+    dfs();
+}
 
 //=========================================================================
 // bfs_tree
@@ -166,4 +171,57 @@ template <class D, class K>
 // Postconditions: 
 //=========================================================================
 template <class D, class K>
-*/
+void Graph<D, K>::bfs_tree(K k)
+{
+    bfs(k);
+
+}
+
+//=========================================================================
+// dfs
+
+// Parameters: 
+// Return:	
+// Preconditions: 
+// Postconditions: 
+//=========================================================================
+template <class D, class K>
+void Graph<D, K>::dfs()
+{
+    for(int i = 0; i < vertices.size(); i++){
+        vertices[i].color = 0;
+        vertices[i].pi = K();
+    }
+    int time = 0;
+    for(int i = 0; i < vertices.size(); i++){
+        if(vertices[i].color == 0){
+            dfs_visit(get(vertices[i].key), time);
+        }
+    }
+}
+
+//=========================================================================
+// dfs_visit
+
+// Parameters: 
+// Return:	
+// Preconditions: 
+// Postconditions: 
+//=========================================================================
+template <class D, class K>
+void Graph<D, K>::dfs_visit(Vertex* v, int t)
+{
+    t++;
+    v->distance = time;
+    v->color = 1;
+    for(int j = 0; j < (adjList[v->key][j]).size(); j++){
+        Vertex* x = get(adjList[v->key][j].key);
+        if (x->color == 0){
+            x->pi = v->key;
+            dfs_visit(x, t);
+        }
+    }
+    t++;
+    v->f = t;
+    v->color = 2;
+}

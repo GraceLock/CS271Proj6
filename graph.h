@@ -19,7 +19,7 @@ class Graph
         int distance;
         K pi;
         int color;
-        //vector<K> adjList;
+        int f;
     };
 
     vector<Vertex> vertices;
@@ -34,6 +34,8 @@ class Graph
         void print_path(K s, K v);
         string edge_class(K u, K v);
         void bfs_tree(K k);
+        void dfs();
+        void dfs_visit(Vertex* v, int t);
 };
 
 #endif
