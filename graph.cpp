@@ -160,6 +160,23 @@ template <class D, class K>
 string Graph<D, K>::edge_class(K u, K v)
 {
     dfs();
+
+    Vertex* v1 = get(u);
+    Vertex* v2 = get(v);
+
+    if (v1->color == 0 || v2->color == 0) {                                                 // If one of the vertices is not in the graph.
+        return "no edge"; 
+    }
+    if (v1->distance < v2->distance && v2->distance < v2->f && v2->f < v1->f) {             // u discovered before v and v finishes before u.
+        return "tree edge"; 
+    } else if (v2->distance <= v1->distance && v1->distance < v1->f && v1->f <= v2->f) {    // v is an ancestor of u.
+        return "back edge"; 
+    } else if (v1->distance < v2->distance && v2->f < v1->f) {                              // u is an ancestor of v but not a direct parent.
+        return "forward edge";
+    } else if (v2->f < v1->distance || v1->f < v2->distance) {                              // u and v are in different subtrees.
+        return "cross edge";
+    }
+    return "unknown";                                                                       // Catch-all for any unclassified edges.
 }
 
 //=========================================================================
