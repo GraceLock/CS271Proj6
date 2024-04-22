@@ -301,7 +301,31 @@ Edge Cases:
 - multiple paths
 */
 void test_print_path(){
-        
+    try
+    {
+        vector<string> keys;
+        vector<int> data;
+        vector<vector<string>> edges = {{}, {}, {}, {}};
+        Graph<int, string> G(keys, data, edges);
+
+        keys = {"Hello World", "B", "C", "D"};
+        data = {1, 2, 3, 4};
+        edges = {{"B", "D"}, {"C"}, {"D"}, {}};
+        Graph<int, string> G1(keys, data, edges);
+
+        stringstream buffer;
+        streambuf *prevbuf = cout.rdbuf(buffer.rdbuf());
+        G1.print_path("B", "C");
+        cout.rdbuf(prevbuf);
+        if (buffer.str() != "B -> C")
+        {
+            cout << "Incorrect path from vertex \"B\" to vertex \"C\". Expected: B -> C but got : " << buffer.str() << endl;
+        }
+    }
+    catch (exception &e)
+    {
+        cerr << "Error testing print path : " << e.what() << endl;
+    }
 }
 
 /*
@@ -330,6 +354,8 @@ void test_bfs_tree(){
 int main(){
     test_get();
     test_reachable();
+    test_bfs();
+    test_print_path();
 
     cout << "Testing Completed" << endl;
     return 0;
