@@ -23,6 +23,7 @@ Graph<D, K>::Graph(vector<K> keys, vector<D> data, vector<vector<K> > edges)
         Vertex v;
         v.key = keys[i];
         v.data = data[i];
+        cout << data[i] << endl;
         v.color = false; // false for white
         v.distance = -1; // Distance from start vertex
         v.pi = K(); // Parent
@@ -102,7 +103,6 @@ void Graph<D, K>::bfs(K k)
     s->color = true;
     s->distance = 0;
     s->pi = K();
-    unordered_map<K, vector<K>> newAdjList;
 
     queue<K> Q;
     Q.push(s->key);
@@ -117,11 +117,9 @@ void Graph<D, K>::bfs(K k)
                 v->distance = u->distance + 1;
                 v->pi = u->key;
                 Q.push(v->key);
-                newAdjList[u->key].push_back(v->key);
             }
         }
     }
-    adjList = newAdjList;
 }
 
 //=========================================================================
@@ -166,9 +164,7 @@ string Graph<D, K>::edge_class(K u, K v)
     Vertex* v1 = get(u);
     Vertex* v2 = get(v);
 
-    if (v1->color == false || v2->color == false) {         // If one of the vertices is not in the graph.
-        return "no edge"; 
-    } else if (v2->pi == v1->key) { //tree edge, v2 is a direct descendant of v1
+    if (v2->pi == v1->key) { //tree edge, v2 is a direct descendant of v1
         return "tree edge";
     } else if (v1->distance < v2->distance && v2->distance < v2->f && v2->f < v1->f) { //forward edge, v2 is a descendant of v1
         return "forward edge";
@@ -204,7 +200,6 @@ void Graph<D, K>::bfs_tree(K k)
     s->color = true;
     s->distance = 0;
     s->pi = K();
-    unordered_map<K, vector<K>> newAdjList;
 
     queue<K> Q;
     Q.push(s->key);
@@ -219,12 +214,10 @@ void Graph<D, K>::bfs_tree(K k)
                 v->distance = u->distance + 1;
                 v->pi = u->key;
                 Q.push(v->key);
-                newAdjList[u->key].push_back(v->key);     
                 A.push_back(v);
             }
         }
     }
-    adjList = newAdjList;
 
     for(int i = 0; i < A.size()-1; i++){
         if(A[i]->distance != A[i+1]->distance){
