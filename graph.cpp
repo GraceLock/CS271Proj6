@@ -190,6 +190,8 @@ string Graph<D, K>::edge_class(K u, K v)
     Vertex* v1 = get(u);
     Vertex* v2 = get(v);
 
+    if(v1 == nullptr || v2 == nullptr){return "no edge";}
+
     if (v2->pi == v1->key) { //tree edge, v2 is a direct descendant of v1
         return "tree edge";
     } else if (v1->distance < v2->distance && v2->distance < v2->f && v2->f < v1->f) { //forward edge, v2 is a descendant of v1
@@ -219,6 +221,7 @@ void Graph<D, K>::bfs_tree(K k)
 {
     vector<Vertex*> A;
     Vertex* s = get(k);
+    if(s == nullptr){return;}
     A.push_back(s);
 
     for(int i = 0; i < vertices.size(); i++){

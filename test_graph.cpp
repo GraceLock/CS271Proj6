@@ -440,59 +440,59 @@ Edge Cases:
 void test_edge_class()
 {
     // segmentation fault here
-    // //int string
-    // try{
-    //     vector<string> keys;
-    //     vector<int> data;
-    //     vector<vector<string>> edges = {{}, {}, {}, {}};
-    //     Graph<int, string> G(keys, data, edges);
-    //     //empty test
+    //int string
+    try{
+        vector<string> keys;
+        vector<int> data;
+        vector<vector<string>> edges = {{}, {}, {}, {}};
+        Graph<int, string> G(keys, data, edges);
+        //empty test
+        string e_class = G.edge_class("R", "V");
+        if (e_class != "no edge")
+        {
+            cout << "Misidentified empty tree edge" << endl;
+        }
 
-    //     string e_class = G.edge_class("R", "V");
-    //     if (e_class != "no edge")
-    //     {
-    //         cout << "Misidentified empty tree edge" << endl;
-    //     }
+    }catch (exception &e){
+        cerr << "Error testing edge class : " << e.what() << endl;
+    }
 
-    // }catch (exception &e){
-    //     cerr << "Error testing edge class : " << e.what() << endl;
-    // }
+    //string int
+    try{
+        vector<int> keys;
+        vector<string> data;
+        vector<vector<int>> edges = {{}, {}, {}, {}};
+        Graph<string, int> G(keys, data, edges);
+        //empty test
 
-    // //string int
-    // try{
-    //     vector<int> keys;
-    //     vector<string> data;
-    //     vector<vector<int>> edges = {{}, {}, {}, {}};
-    //     Graph<string, int> G(keys, data, edges);
-    //     //empty test
+        string e_class = G.edge_class(1, 2);
+        if (e_class != "no edge")
+        {
+            cout << "Misidentified empty tree edge" << endl;
+        }
 
-    //     string e_class = G.edge_class(1, 2);
-    //     if (e_class != "no edge")
-    //     {
-    //         cout << "Misidentified empty tree edge" << endl;
-    //     }
+    }catch (exception &e){
+        cerr << "Error testing edge class : " << e.what() << endl;
+    }
 
-    // }catch (exception &e){
-    //     cerr << "Error testing edge class : " << e.what() << endl;
-    // }
+    //double char
+    try{
+        vector<char> keys;
+        vector<double> data;
+        vector<vector<char>> edges = {{}, {}, {}, {}};
+        Graph<double, char> G(keys, data, edges);
+        //empty test
 
-    // //double char
-    // try{
-    //     vector<char> keys;
-    //     vector<double> data;
-    //     vector<vector<char>> edges = {{}, {}, {}, {}};
-    //     Graph<double, char> G(keys, data, edges);
-    //     //empty test
+        string e_class = G.edge_class('A','B');
 
-    //     string e_class = G.edge_class('A','B');
-    //     if (e_class != "no edge")
-    //     {
-    //         cout << "Misidentified empty tree edge" << endl;
-    //     }
+        if (e_class != "no edge")
+        {
+            cout << "Misidentified empty tree edge" << endl;
+        }
 
-    // }catch (exception &e){
-    //     cerr << "Error testing edge class : " << e.what() << endl;
-    // }
+    }catch (exception &e){
+        cerr << "Error testing edge class : " << e.what() << endl;
+    }
 
     Graph<string, string> *G = generate_graph("graph_description.txt");
 
@@ -621,17 +621,17 @@ void test_bfs_tree()
 
     //float
     try{
-        vector<float> keys;
-        vector<string> data;
-        vector<vector<float>> edges = {{}, {}, {}, {}};
-        keys = {1.5, 2.5, 3.5, 4.5};
-        data = {"Hello World", "B", "C", "D"};
-        edges = {{2.5, 4.5}, {3.5}, {4.5}, {}};
+        vector<float> keys = {1.5, 2.5, 3.5, 4.5};
+        vector<string> data = {"Hello World", "B", "C", "D"};
+        vector<vector<float>> edges = {{2.5, 4.5}, {3.5}, {4.5}, {}};
         Graph<string, float> G(keys, data, edges);
-        
+
         stringstream buffer;
-        streambuf *prevbuf = cout.rdbuf(buffer.rdbuf());
+        streambuf *prevbuf = cout.rdbuf(buffer.rdbuf()); 
+
         G.bfs_tree(2);
+
+        G.bfs_tree(2.5);
         cout.rdbuf(prevbuf);
         if (buffer.str() != "2.5\n3.5\n4.5")
         {
