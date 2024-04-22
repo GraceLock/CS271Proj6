@@ -10,9 +10,14 @@ using namespace std;
 // Constructor
 
 // Parameters: 
-// Return:	
-// Preconditions: 
-// Postconditions: 
+//  keys - vector of keys of the vertices for the graph (of any type)
+//  data - vector of data items for the vertices of the graph (of any type), 
+//          must be the same number as keys and must be in the same order as keys
+//  edges - vector of vectors (same type as keys), representing the adjacency 
+//          lists of the vertices in matching order
+// Return:	none 
+// Preconditions: Keys, data, and edges should be the same length and in matching order
+// Postconditions: A graph structure is created with the keys, data, and edges provided
 //=========================================================================
 
 template <class D, class K>
@@ -37,9 +42,12 @@ Graph<D, K>::Graph(vector<K> keys, vector<D> data, vector<vector<K> > edges)
 // get
 
 // Parameters: 
+//  k - key of the vertex to return a pointer to 
 // Return:	
-// Preconditions: 
-// Postconditions: 
+//  a pointer to a vertex in the graph 
+// Preconditions: the graph to call get() on exists  
+// Postconditions: if k is in the graph a pointer is returned to the appropriate 
+//      vertex, if k is not in the graph nullptr is returned 
 //=========================================================================
 template <class D, class K>
 typename Graph<D, K>::Vertex* Graph<D, K>::get(const K k)
@@ -57,9 +65,14 @@ typename Graph<D, K>::Vertex* Graph<D, K>::get(const K k)
 // reachable
 
 // Parameters: 
+//  u - key of the vertex to start at 
+//  v - key of the vertex to ideally end at 
 // Return:	
-// Preconditions: 
-// Postconditions: 
+//  true - if v is reachable from u 
+//  false - if v is not reachable from u 
+// Preconditions: u and v are in the graph for a meaningful return value 
+// Postconditions: true or false is accurately returned based on if 
+//  v is reachable in the graph from u 
 //=========================================================================
 
 template <class D, class K>
@@ -83,9 +96,11 @@ bool Graph<D, K>::reachable(K u, K v)
 // bfs
 
 // Parameters: 
-// Return:	
-// Preconditions: 
-// Postconditions: 
+//  k - key of the source vertex to begin the algorithm at 
+// Return:	none 
+// Preconditions: The key k exists in the graph 
+// Postconditions: The algorithm accurately updates the attributes of the vertices
+//  in the graph: color, distance, pi
 //=========================================================================
 
 template <class D, class K>
@@ -126,9 +141,12 @@ void Graph<D, K>::bfs(K k)
 // print_path
 
 // Parameters: 
-// Return:	
-// Preconditions: 
-// Postconditions: 
+//  s - key of the start vertex
+//  v - key of the end vertex
+// Return:	none 
+// Preconditions: s and v are existing keys in the graph 
+// Postconditions: prints the shortest path in G corresponding
+//  to the key u to the vertex in G corresponding to the key v
 //=========================================================================
 
 template <class D, class K>
@@ -152,9 +170,15 @@ void Graph<D, K>::print_path(K s, K v)
 // edge_class
 
 // Parameters: 
+//  u - key of a vertex in the graph 
+//  v - key of a vertex in the graph
 // Return:	
-// Preconditions: 
-// Postconditions: 
+//  string - the string representation of the edge classification:
+//  tree edge, back edge, forward edge, cross edge, or no edge 
+// Preconditions: u and v are existing keys in the graph 
+// Postconditions: the string representation of the edge classification
+//  (tree edge, back edge, forward edge, cross edge, or no edge) of 
+//  the edge from vertex u to v
 //=========================================================================
 template <class D, class K>
 string Graph<D, K>::edge_class(K u, K v)
@@ -179,10 +203,14 @@ string Graph<D, K>::edge_class(K u, K v)
 //=========================================================================
 // bfs_tree
 
-// Parameters: 
-// Return:	
-// Preconditions: 
-// Postconditions: 
+// Parameters:
+//  k - key of source vertex to begin bfs 
+// Return: none
+// Preconditions: key k exists in the graph 
+// Postconditions: The bfs tree is printed for the source vertex corresponding 
+//  to the key s. Vertices in the bfs tree should be represented by their keys. 
+//  Each depth level of the tree should be printed on a separate line with each 
+//  vertex at the same depth being separated by a single space
 //=========================================================================
 template <class D, class K>
 void Graph<D, K>::bfs_tree(K k)
@@ -233,10 +261,11 @@ void Graph<D, K>::bfs_tree(K k)
 //=========================================================================
 // dfs
 
-// Parameters: 
-// Return:	
-// Preconditions: 
-// Postconditions: 
+// Parameters: none 
+// Return:	none 
+// Preconditions: the graph object exists 
+// Postconditions: the attributes of the vertices are appropriately updated 
+//  according to the depth first search algorithm
 //=========================================================================
 template <class D, class K>
 void Graph<D, K>::dfs()
@@ -257,9 +286,11 @@ void Graph<D, K>::dfs()
 // dfs_visit
 
 // Parameters: 
-// Return:	
-// Preconditions: 
-// Postconditions: 
+//  v - pointer to a vertex in the graph 
+//  t - time variable 
+// Return:	none 
+// Preconditions: the vertex at v has not yet been discovered 
+// Postconditions: all of the attributes of the vertex v are properly updated
 //=========================================================================
 template <class D, class K>
 void Graph<D, K>::dfs_visit(Vertex* v, int &t)
