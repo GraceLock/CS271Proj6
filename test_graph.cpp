@@ -279,14 +279,58 @@ void test_bfs(){
         Graph<int, string> G(keys, data, edges);
         //empty test
 
+        G.bfs("3");
+
         keys = {"Hello World", "B", "C", "D"};
         data = {1, 2, 3, 4};
-        edges = {{"B", "D"}, {"C"}, {"D"}, {}};
+        edges = {{"B", "D"}, {"C"}, {"D", "C"}, {}};
         Graph<int, string> G1(keys, data, edges);
         //more tests
 
+        G1.bfs("Hello World");
+        int distances[4] = {0, 1, 2, 1};
+        for (int i = 0; i < 4; i++)
+        {
+            if (G1.get(keys[i]) == nullptr || G1.get(keys[i])->distance != distances[i])
+            {
+                cout << "Incorrect bfs result. Vertex " << keys[i] << " should have distance " << distances[i] << " from source vertex \"Hello World\"" << endl;
+            }
+        }
+
+        G1.bfs("no");
+
+        G1.bfs("B");
+        int distances1[4] = {-1, 0, 1, 2};
+        for (int i = 0; i < 4; i++)
+        {
+            if (G1.get(keys[i]) == nullptr || G1.get(keys[i])->distance != distances1[i])
+            {
+                cout << "Incorrect bfs result. Vertex " << keys[i] << " should have distance " << distances1[i] << " from source vertex \"Hello World\"" << endl;
+            }
+        }
+
+        G1.bfs("C");
+        int distances2[4] = {-1, -1, 0, 1};
+        for (int i = 0; i < 4; i++)
+        {
+            if (G1.get(keys[i]) == nullptr || G1.get(keys[i])->distance != distances2[i])
+            {
+                cout << "Incorrect bfs result. Vertex " << keys[i] << " should have distance " << distances2[i] << " from source vertex \"Hello World\"" << endl;
+            }
+        }
+
+        G1.bfs("D");
+        int distances3[4] = {-1, -1, -1, 0};
+        for (int i = 0; i < 4; i++)
+        {
+            if (G1.get(keys[i]) == nullptr || G1.get(keys[i])->distance != distances3[i])
+            {
+                cout << "Incorrect bfs result. Vertex " << keys[i] << " should have distance " << distances3[i] << " from source vertex \"Hello World\"" << endl;
+            }
+        }
+
     }catch (exception &e){
-        cerr << "Error testing reachable : " << e.what() << endl;
+        cerr << "Error testing bfs : " << e.what() << endl;
     }
 
     //string int
@@ -297,14 +341,58 @@ void test_bfs(){
         Graph<string, int> G(keys, data, edges);
         //empty test
 
+        G.bfs(3);
+
         keys = {1, 2, 3, 4};
         data = {"Hello World", "B", "C", "D"};
-        edges = {{2, 4}, {3}, {4}, {}};
+        edges = {{2, 4}, {3}, {4, 3}, {}};
         Graph<string, int> G1(keys, data, edges);
         //more tests
 
+        G1.bfs(1);
+        int distances[4] = {0, 1, 2, 1};
+        for (int i = 0; i < 4; i++)
+        {
+            if (G1.get(keys[i]) == nullptr || G1.get(keys[i])->distance != distances[i])
+            {
+                cout << "Incorrect bfs result. Vertex " << keys[i] << " should have distance " << distances[i] << " from source vertex \"Hello World\"" << endl;
+            }
+        }
+
+        G1.bfs(-110);
+
+        G1.bfs(2);
+        int distances1[4] = {-1, 0, 1, 2};
+        for (int i = 0; i < 4; i++)
+        {
+            if (G1.get(keys[i]) == nullptr || G1.get(keys[i])->distance != distances1[i])
+            {
+                cout << "Incorrect bfs result. Vertex " << keys[i] << " should have distance " << distances1[i] << " from source vertex \"Hello World\"" << endl;
+            }
+        }
+
+        G1.bfs(3);
+        int distances2[4] = {-1, -1, 0, 1};
+        for (int i = 0; i < 4; i++)
+        {
+            if (G1.get(keys[i]) == nullptr || G1.get(keys[i])->distance != distances2[i])
+            {
+                cout << "Incorrect bfs result. Vertex " << keys[i] << " should have distance " << distances2[i] << " from source vertex \"Hello World\"" << endl;
+            }
+        }
+
+        G1.bfs(4);
+        int distances3[4] = {-1, -1, -1, 0};
+        for (int i = 0; i < 4; i++)
+        {
+            if (G1.get(keys[i]) == nullptr || G1.get(keys[i])->distance != distances3[i])
+            {
+                cout << "Incorrect bfs result. Vertex " << keys[i] << " should have distance " << distances3[i] << " from source vertex \"Hello World\"" << endl;
+            }
+        }
+
     }catch (exception &e){
-        cerr << "Error testing reachable : " << e.what() << endl;
+        cerr << "Error testing bfs : " << e.what() << endl;
     }
 
     //double char
@@ -315,14 +403,58 @@ void test_bfs(){
         Graph<double, char> G(keys, data, edges);
         //empty test
 
+        G.bfs(3);
+
         keys = {'A', 'B', 'C', 'D'};
-        data = {3.1415, 2.7182, 1.6180, -0.5};
-        edges = {{'A', 'B'}, {'C'}, {'D'}, {}};
+        data = {0.1, 0.2, 0.3, 0.4};
+        edges = {{'B', 'D'}, {'C'}, {'D', 'C'}, {}};
         Graph<double, char> G1(keys, data, edges);
         //more tests
 
+        G1.bfs('A');
+        int distances[4] = {0, 1, 2, 1};
+        for (int i = 0; i < 4; i++)
+        {
+            if (G1.get(keys[i]) == nullptr || G1.get(keys[i])->distance != distances[i])
+            {
+                cout << "Incorrect bfs result. Vertex " << keys[i] << " should have distance " << distances[i] << " from source vertex \"Hello World\"" << endl;
+            }
+        }
+
+        G1.bfs('L');
+
+        G1.bfs('B');
+        int distances1[4] = {-1, 0, 1, 2};
+        for (int i = 0; i < 4; i++)
+        {
+            if (G1.get(keys[i]) == nullptr || G1.get(keys[i])->distance != distances1[i])
+            {
+                cout << "Incorrect bfs result. Vertex " << keys[i] << " should have distance " << distances1[i] << " from source vertex \"Hello World\"" << endl;
+            }
+        }
+
+        G1.bfs('C');
+        int distances2[4] = {-1, -1, 0, 1};
+        for (int i = 0; i < 4; i++)
+        {
+            if (G1.get(keys[i]) == nullptr || G1.get(keys[i])->distance != distances2[i])
+            {
+                cout << "Incorrect bfs result. Vertex " << keys[i] << " should have distance " << distances2[i] << " from source vertex \"Hello World\"" << endl;
+            }
+        }
+
+        G1.bfs('D');
+        int distances3[4] = {-1, -1, -1, 0};
+        for (int i = 0; i < 4; i++)
+        {
+            if (G1.get(keys[i]) == nullptr || G1.get(keys[i])->distance != distances3[i])
+            {
+                cout << "Incorrect bfs result. Vertex " << keys[i] << " should have distance " << distances3[i] << " from source vertex \"Hello World\"" << endl;
+            }
+        }
+
     }catch (exception &e){
-        cerr << "Error testing reachable : " << e.what() << endl;
+        cerr << "Error testing bfs : " << e.what() << endl;
     }
 }
 
