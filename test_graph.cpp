@@ -9,6 +9,40 @@
 #include <sstream>
 #include "graph.cpp"
 
+Graph<string, string> *generate_graph(string fname)
+{
+    string line;
+    ifstream infile(fname);
+    vector<string> keys = {};
+    vector<string> data = {};
+    vector<vector<string>> adjs = {};
+    if (infile.is_open())
+    {
+        while (getline(infile, line))
+        {
+            size_t delim = line.find(":");
+            string key = line.substr(0, delim);
+            string adj = line.substr(delim + 1);
+
+            keys.push_back(key);
+            data.push_back(key + " data");
+            delim = adj.find(",");
+            vector<string> adj_lst = {};
+            while (delim != string::npos)
+            {
+                adj_lst.push_back(adj.substr(0, delim));
+                adj = adj.substr(delim + 1);
+                delim = adj.find(",");
+            }
+            adj_lst.push_back(adj);
+            adjs.push_back(adj_lst);
+        }
+        infile.close();
+    }
+    Graph<string, string> *G = new Graph<string, string>(keys, data, adjs);
+    return G;
+}
+
 /*
 Edge Cases:
 - empty graph
@@ -336,7 +370,130 @@ Edge Cases:
 - neither exist
 - source vertex == target vertex
 */
-void test_edge_class(){
+void test_edge_class()
+{
+     //int string
+    try{
+        vector<string> keys;
+        vector<int> data;
+        vector<vector<string>> edges = {{}, {}, {}, {}};
+        Graph<int, string> G(keys, data, edges);
+        //empty test
+
+        string e_class = G.edge_class("R", "V");
+        if (e_class != "no edge")
+        {
+            cout << "Misidentified empty tree edge" << endl;
+        }
+
+    }catch (exception &e){
+        cerr << "Error testing edge class : " << e.what() << endl;
+    }
+
+    //string int
+    try{
+        vector<int> keys;
+        vector<string> data;
+        vector<vector<int>> edges = {{}, {}, {}, {}};
+        Graph<string, int> G(keys, data, edges);
+        //empty test
+
+        string e_class = G.edge_class(1, 2);
+        if (e_class != "no edge")
+        {
+            cout << "Misidentified empty tree edge" << endl;
+        }
+
+    }catch (exception &e){
+        cerr << "Error testing edge class : " << e.what() << endl;
+    }
+
+    //double char
+    try{
+        vector<char> keys;
+        vector<double> data;
+        vector<vector<char>> edges = {{}, {}, {}, {}};
+        Graph<double, char> G(keys, data, edges);
+        //empty test
+
+        string e_class = G.edge_class('A','B');
+        if (e_class != "no edge")
+        {
+            cout << "Misidentified empty tree edge" << endl;
+        }
+
+    }catch (exception &e){
+        cerr << "Error testing edge class : " << e.what() << endl;
+    }
+    Graph<string, string> *G = generate_graph("graph_description.txt");
+
+    try
+    {
+        string e_class = G->edge_class("R", "V"); // tree edge
+        if (e_class != "tree edge")
+        {
+            cout << "Misidentified tree edge (\"R\", \"V\") as : " << e_class << endl;
+        }
+        e_class = G->edge_class("U", "Y"); // tree edge
+        if (e_class != "tree edge")
+        {
+            cout << "Misidentified back edge (\"U\", \"Y\") as : " << e_class << endl;
+        }
+        e_class = G->edge_class("X", "U"); // back edge
+        if (e_class != "back edge")
+        {
+            cout << "Misidentified back edge (\"X\", \"U\") as : " << e_class << endl;
+        }
+        e_class = G->edge_class("S", "R"); // back edge
+        if (e_class != "back edge")
+        {
+            cout << "Misidentified tree edge (\"S\", \"R\") as : " << e_class << endl;
+        }
+        e_class = G->edge_class("R", "U"); // no edge
+        if (e_class != "no edge")
+        {
+            cout << "Misidentified non-existant edge (\"R\", \"U\") as : " << e_class << endl;
+        }
+         e_class = G->edge_class("S", "U"); // no edge
+        if (e_class != "no edge")
+        {
+            cout << "Misidentified non-existant edge (\"S\", \"U\") as : " << e_class << endl;
+        }
+        e_class = G->edge_class("T", "W"); // forward edge
+        if (e_class != "forward edge")
+        {
+            cout << "Misidentified forward edge (\"T\", \"W\") as : " << e_class << endl;
+        }
+        e_class = G->edge_class("R", "S"); // forward edge
+        if (e_class != "forward edge")
+        {
+            cout << "Misidentified forward edge (\"R\", \"S\") as : " << e_class << endl;
+        }
+        e_class = G->edge_class("T", "S"); // cross edge
+        if (e_class != "cross edge")
+        {
+            cout << "Misidentified forward edge (\"T\", \"S\") as : " << e_class << endl;
+        }
+        e_class = G->edge_class("R", "A"); // only one vertex exists
+        if (e_class != "no edge")
+        {
+            cout << "Misidentified edge" << endl;
+        }
+        e_class = G->edge_class("A", "S"); // only one vertex exists but reverse order
+        if (e_class != "no edge")
+        {
+            cout << "Misidentified edge" << endl;
+        }
+        e_class = G->edge_class("A", "B"); // neither exists
+        if (e_class != "no edge")
+        {
+            cout << "Misidentified edge" << endl;
+        }
+    }
+    catch (exception &e)
+    {
+        cerr << "Error testing edge class : " << e.what() << endl;
+    }
 }
 
 /*
@@ -347,8 +504,27 @@ Edge Cases:
 - source vertex not in graph
 - include isolated vertices
 */
-void test_bfs_tree(){
 
+void test_bfs_tree()
+{
+
+    
+    try
+    {
+        stringstream buffer;
+        streambuf *prevbuf = cout.rdbuf(buffer.rdbuf());
+        G->bfs_tree("T");
+        cout.rdbuf(prevbuf);
+        if (buffer.str() != "T\nS U W\nR Y X\nV")
+        {
+            cout << "Incorrect bfs tree. Expected : \nT\nS U W\nR Y X\nV \nbut got :\n"
+                 << buffer.str() << endl;
+        }
+    }
+    catch (exception &e)
+    {
+        cerr << "Error testing bfs tree : " << e.what() << endl;
+    }
 }
 
 int main(){
@@ -356,6 +532,8 @@ int main(){
     test_reachable();
     test_bfs();
     test_print_path();
+    test_edge_class();
+    test_bfs_tree();
 
     cout << "Testing Completed" << endl;
     return 0;
