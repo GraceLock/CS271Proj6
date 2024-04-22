@@ -517,9 +517,58 @@ void test_bfs_tree()
         streambuf *prevbuf = cout.rdbuf(buffer.rdbuf());
         G->bfs_tree("T");
         cout.rdbuf(prevbuf);
-        if (buffer.str() == "T\nS U W\nR Y X\nV")
+        if (buffer.str() != "T\nS U W\nR Y X\nV")
         {
             cout << "Incorrect bfs tree. Expected : \nT\nS U W\nR Y X\nV \nbut got :\n"
+                 << buffer.str() << endl;
+        }
+    }
+    catch (exception &e)
+    {
+        cerr << "Error testing bfs tree : " << e.what() << endl;
+    }
+
+    try
+    {
+        stringstream buffer;
+        streambuf *prevbuf = cout.rdbuf(buffer.rdbuf());
+        G->bfs_tree("R");
+        cout.rdbuf(prevbuf);
+        if (buffer.str() != "R\nV\nS")
+        {
+            cout << "Incorrect bfs tree. Expected : \nR\nV\nS \nbut got :\n"
+                 << buffer.str() << endl;
+        }
+    }
+    catch (exception &e)
+    {
+        cerr << "Error testing bfs tree : " << e.what() << endl;
+    }
+    try
+    {
+        stringstream buffer;
+        streambuf *prevbuf = cout.rdbuf(buffer.rdbuf());
+        G->bfs_tree("U");
+        cout.rdbuf(prevbuf);
+        if (buffer.str() != "U\nY\nW\nX")
+        {
+            cout << "Incorrect bfs tree. Expected : \nU\nY\nW\nX\nbut got :\n"
+                 << buffer.str() << endl;
+        }
+    }
+    catch (exception &e)
+    {
+        cerr << "Error testing bfs tree : " << e.what() << endl;
+    }
+    try
+    {
+        stringstream buffer;
+        streambuf *prevbuf = cout.rdbuf(buffer.rdbuf());
+        G->bfs_tree("W");
+        cout.rdbuf(prevbuf);
+        if (buffer.str() != "W\nX\nU\nY")
+        {
+            cout << "Incorrect bfs tree. Expected : \nW\nX\nU\nY\nbut got :\n"
                  << buffer.str() << endl;
         }
     }
