@@ -124,7 +124,7 @@ void test_print_path(Graph<string, string> *G)
         cerr << "Error testing print path : " << e.what() << endl;
     }
 }
-/*
+
 void test_edge_class(Graph<string, string> *G)
 {
     try
@@ -161,7 +161,7 @@ void test_edge_class(Graph<string, string> *G)
     }
 }
 
-void test_bfs_tree(Graph<string, string> *G)
+/*void test_bfs_tree(Graph<string, string> *G)
 {
     try
     {
@@ -181,6 +181,7 @@ void test_bfs_tree(Graph<string, string> *G)
     }
 }
 */
+
 int main()
 {
 
@@ -189,7 +190,7 @@ int main()
     test_reachable(G);
     test_bfs(G);
     test_print_path(G);
-    //test_edge_class(G);
+    test_edge_class(G);
     //test_bfs_tree(G);
 
     cout << "Testing completed" << endl;

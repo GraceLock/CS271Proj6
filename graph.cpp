@@ -23,7 +23,7 @@ Graph<D, K>::Graph(vector<K> keys, vector<D> data, vector<vector<K> > edges)
         Vertex v;
         v.key = keys[i];
         v.data = data[i];
-        v.color = 0; // 0 for white
+        v.color = false; // false for white
         v.distance = -1; // Distance from start vertex
         v.pi = K(); // Parent
         v.f = 0;
@@ -76,7 +76,7 @@ bool Graph<D, K>::reachable(K u, K v)
         return false;
     }
 
-    return targetVertex->color == 2; // Return true if v is black (reachable), false otherwise 
+    return targetVertex->color == true; // Return true if v is black (reachable), false otherwise 
 }
 
 //=========================================================================
@@ -94,12 +94,12 @@ void Graph<D, K>::bfs(K k)
     Vertex* s = get(k);
 
     for(int i = 0; i < vertices.size(); i++){
-        vertices[i].color = 0;
+        vertices[i].color = false;
         vertices[i].distance = -1;
         vertices[i].pi = K();
     }
     
-    s->color = 1;
+    s->color = true;
     s->distance = 0;
     s->pi = K();
     
@@ -111,14 +111,14 @@ void Graph<D, K>::bfs(K k)
         Q.pop();
         for(int i = 0; i < adjList[u->key].size(); i++){ 
             Vertex* v = get(adjList[u->key][i]);
-            if (v->color == 0){
-                v->color = 1; // 1 for gray 
+            if (v->color == false){
+                v->color = true; // 1 for gray 
                 v->distance = u->distance + 1;
                 v->pi = u->key;
                 Q.push(v->key);
             }
         }
-        u->color = 2; // 2 for black 
+        //u->color = 2; // 2 for black 
     }
 }
 
@@ -164,19 +164,18 @@ string Graph<D, K>::edge_class(K u, K v)
     Vertex* v1 = get(u);
     Vertex* v2 = get(v);
 
-    if (v1->color == 0 || v2->color == 0) {                                                 // If one of the vertices is not in the graph.
+    if (v1->color == false || v2->color == false) {         // If one of the vertices is not in the graph.
         return "no edge"; 
-    }
-    if (v1->distance < v2->distance && v2->distance < v2->f && v2->f < v1->f) {             // u discovered before v and v finishes before u.
-        return "tree edge"; 
-    } else if (v2->distance <= v1->distance && v1->distance < v1->f && v1->f <= v2->f) {    // v is an ancestor of u.
-        return "back edge"; 
-    } else if (v1->distance < v2->distance && v2->f < v1->f) {                              // u is an ancestor of v but not a direct parent.
+    } else if (v2->pi == v1->key) { //tree edge, v2 is a direct descendant of v1
+        return "tree edge";
+    } else if (v1->distance < v2->distance && v2->distance < v2->f && v2->f < v1->f) { //forward edge, v2 is a descendant of v1
         return "forward edge";
-    } else if (v2->f < v1->distance || v1->f < v2->distance) {                              // u and v are in different subtrees.
+    } else if (v2->distance <= v1->distance && v1->distance < v1->f && v1->f <= v2->f) { //back edge, v2 is an anscestor of v1
+        return "back edge";
+    } else if (v2->distance < v2->f && v2->f < v1->distance && v1->distance < v1->f) { //cross edge, neither node is an ancestor or descendant to the other
         return "cross edge";
     }
-    return "unknown";                                                                       // Catch-all for any unclassified edges.
+    return "no edge";
 }
 
 //=========================================================================
@@ -206,12 +205,12 @@ template <class D, class K>
 void Graph<D, K>::dfs()
 {
     for(int i = 0; i < vertices.size(); i++){
-        vertices[i].color = 0;
+        vertices[i].color = false;
         vertices[i].pi = K();
     }
     int time = 0;
     for(int i = 0; i < vertices.size(); i++){
-        if(vertices[i].color == 0){
+        if(vertices[i].color == false){
             dfs_visit(get(vertices[i].key), time);
         }
     }
@@ -226,19 +225,18 @@ void Graph<D, K>::dfs()
 // Postconditions: 
 //=========================================================================
 template <class D, class K>
-void Graph<D, K>::dfs_visit(Vertex* v, int t)
+void Graph<D, K>::dfs_visit(Vertex* v, int &t)
 {
     t++;
-    v->distance = time;
-    v->color = 1;
-    for(int j = 0; j < (adjList[v->key][j]).size(); j++){
-        Vertex* x = get(adjList[v->key][j].key);
-        if (x->color == 0){
+    v->distance = t;
+    v->color = true;
+    for(int j = 0; j < (adjList[v->key]).size(); j++){
+        Vertex* x = get(adjList[v->key][j]);
+        if (x->color == false){
             x->pi = v->key;
             dfs_visit(x, t);
         }
     }
     t++;
     v->f = t;
-    v->color = 2;
 }

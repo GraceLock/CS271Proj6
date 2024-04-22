@@ -18,7 +18,7 @@ class Graph
         D data;
         int distance;
         K pi;
-        int color;
+        bool color;
         int f;
     };
 
@@ -35,7 +35,7 @@ class Graph
         string edge_class(K u, K v);
         void bfs_tree(K k);
         void dfs();
-        void dfs_visit(Vertex* v, int t);
+        void dfs_visit(Vertex* v, int &t);
 };
 
 #endif
