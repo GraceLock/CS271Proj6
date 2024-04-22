@@ -107,13 +107,13 @@ template <class D, class K>
 void Graph<D, K>::bfs(K k)
 {
     Vertex* s = get(k);
-    if(s == nullptr){return;}
+    if(s == nullptr){return;} //validate preconditions
 
     for(int i = 0; i < vertices.size(); i++){
         vertices[i].color = false;
         vertices[i].distance = -1;
         vertices[i].pi = K();
-    }
+    } //initial setup
     
     s->color = true;
     s->distance = 0;
