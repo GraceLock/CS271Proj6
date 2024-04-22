@@ -1,3 +1,9 @@
+//=========================================================================
+//  graph.h
+//  CS 271 Graph Project: Header File
+//  Created by Daniel Ziabicki, Grace Lock, William Nguyen
+//=========================================================================
+
 #include <iostream>
 #include <string>
 #include <sstream>

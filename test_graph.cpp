@@ -799,7 +799,7 @@ void test_bfs_tree()
         cerr << "Error testing reachable : " << e.what() << endl;
     }
 
-    //char
+    //bool
     try{
         vector<bool> keys;
         vector<string> data;
