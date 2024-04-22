@@ -45,7 +45,7 @@ Graph<D, K>::Graph(vector<K> keys, vector<D> data, vector<vector<K> > edges)
 //  k - key of the vertex to return a pointer to 
 // Return:	
 //  a pointer to a vertex in the graph 
-// Preconditions: the graph to call get() on exists  
+// Preconditions: the graph to call get() on exists and k is in the graph 
 // Postconditions: if k is in the graph a pointer is returned to the appropriate 
 //      vertex, if k is not in the graph nullptr is returned 
 //=========================================================================
@@ -152,6 +152,8 @@ void Graph<D, K>::bfs(K k)
 template <class D, class K>
 void Graph<D, K>::print_path(K s, K v)
 {
+    bfs(s);
+
     Vertex* x = get(s);
     Vertex* y = get(v);
 

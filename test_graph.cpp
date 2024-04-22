@@ -303,6 +303,7 @@ Edge Cases:
 void test_print_path(){
     try
     {
+        //Path exists
         vector<string> keys;
         vector<int> data;
         vector<vector<string>> edges = {{}, {}, {}, {}};
@@ -321,6 +322,72 @@ void test_print_path(){
         {
             cout << "Incorrect path from vertex \"B\" to vertex \"C\". Expected: B -> C but got : " << buffer.str() << endl;
         }
+
+        //path doesn't exist
+        keys = {"Hello World", "B", "C", "D"};
+        data = {1, 2, 3, 4};
+        edges = {{"B", "D"}, {}, {"D"}, {}};
+        Graph<int, string> G2(keys, data, edges);
+
+        stringstream buffer1;
+        streambuf *prevbuf1 = cout.rdbuf(buffer1.rdbuf());
+        G2.print_path("B", "C");
+        cout.rdbuf(prevbuf1);
+        if (buffer1.str() != "")
+        {
+            cout << "Incorrect path from vertex \"B\" to vertex \"C\". Expected: but got : " << buffer1.str() << endl;
+        }
+
+        //Source and target are the same
+        vector<int> keys1 = {1, 2, 3, 4};
+        vector<float> data1 = {1.12, 2.54, 3.44, 4.99};
+        vector<vector<int>> edges1 = {{2, 3}, {}, {2}, {2}};
+        Graph<float, int> G3(keys1, data1, edges1);
+
+        stringstream buffer2;
+        streambuf *prevbuf2 = cout.rdbuf(buffer2.rdbuf());
+        G3.print_path(3, 3);
+        cout.rdbuf(prevbuf2);
+        if (buffer2.str() != "3")
+        {
+            cout << "Incorrect path from vertex \"3\" to vertex \"3\". Expected: but got : " << buffer2.str() << endl;
+        }
+
+        //Multiple paths 
+        stringstream buffer3;
+        streambuf *prevbuf3 = cout.rdbuf(buffer3.rdbuf());
+        G3.print_path(1, 3);
+        cout.rdbuf(prevbuf3);
+        if (buffer3.str() != "1 -> 3")
+        {
+            cout << "Incorrect path from vertex \"1\" to vertex \"3\". Expected: 1 -> 3 but got : " << buffer3.str() << endl;
+        }
+
+        //Path exists string
+        vector<string> keys2 = {"grace", "daniel", "william", "cs"};
+        vector<string> data2 = {"hi", "apple", "banana", "dog"};
+        vector<vector<string>> edges2 = {{"daniel", "cs"}, {"william"}, {"grace"}, {"daniel"}};
+        Graph<string, string> G4(keys2, data2, edges2);
+
+        stringstream buffer5;
+        streambuf *prevbuf5 = cout.rdbuf(buffer5.rdbuf());
+        G4.print_path("daniel", "william");
+        cout.rdbuf(prevbuf5);
+        if (buffer5.str() != "daniel -> william")
+        {
+            cout << "Incorrect path from vertex \"daniel\" to vertex \"william\". Expected: daniel -> william but got : " << buffer5.str() << endl;
+        }
+
+        //Path exists bool
+        stringstream buffer6;
+        streambuf *prevbuf6 = cout.rdbuf(buffer6.rdbuf());
+        G4.print_path("daniel", "cs");
+        cout.rdbuf(prevbuf6);
+        if (buffer6.str() != "daniel -> william -> grace -> cs")
+        {
+            cout << "Incorrect path from vertex \"dan\" to vertex \"cs\". Expected: dan -> will -> grace -> cs but got : " << buffer6.str() << endl;
+        }
+
     }
     catch (exception &e)
     {
