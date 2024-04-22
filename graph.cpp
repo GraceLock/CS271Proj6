@@ -29,7 +29,7 @@ Graph<D, K>::Graph(vector<K> keys, vector<D> data, vector<vector<K> > edges)
         v.f = 0;
         vertices.push_back(v);
 
-        adjList[keys[i]] = edges[i]; //intiallize adjacency list
+        adjList[keys[i]] = edges[i]; //intialize adjacency list
     }
 }
 
@@ -102,7 +102,8 @@ void Graph<D, K>::bfs(K k)
     s->color = true;
     s->distance = 0;
     s->pi = K();
-    
+    unordered_map<K, vector<K>> newAdjList;
+
     queue<K> Q;
     Q.push(s->key);
     while(!Q.empty()){
@@ -116,10 +117,11 @@ void Graph<D, K>::bfs(K k)
                 v->distance = u->distance + 1;
                 v->pi = u->key;
                 Q.push(v->key);
+                newAdjList[u->key].push_back(v->key);
             }
         }
-        //u->color = 2; // 2 for black 
     }
+    adjList = newAdjList;
 }
 
 //=========================================================================
@@ -189,7 +191,49 @@ string Graph<D, K>::edge_class(K u, K v)
 template <class D, class K>
 void Graph<D, K>::bfs_tree(K k)
 {
-    bfs(k);
+    vector<Vertex*> A;
+    Vertex* s = get(k);
+    A.push_back(s);
+
+    for(int i = 0; i < vertices.size(); i++){
+        vertices[i].color = false;
+        vertices[i].distance = -1;
+        vertices[i].pi = K();
+    }
+    
+    s->color = true;
+    s->distance = 0;
+    s->pi = K();
+    unordered_map<K, vector<K>> newAdjList;
+
+    queue<K> Q;
+    Q.push(s->key);
+    while(!Q.empty()){
+        K a = Q.front();
+        Vertex* u = get(a);
+        Q.pop();
+        for(int i = 0; i < adjList[u->key].size(); i++){ 
+            Vertex* v = get(adjList[u->key][i]);
+            if (v->color == false){
+                v->color = true; // 1 for gray 
+                v->distance = u->distance + 1;
+                v->pi = u->key;
+                Q.push(v->key);
+                newAdjList[u->key].push_back(v->key);     
+                A.push_back(v);
+            }
+        }
+    }
+    adjList = newAdjList;
+
+    for(int i = 0; i < A.size()-1; i++){
+        if(A[i]->distance != A[i+1]->distance){
+            cout << A[i]->key << endl;
+        }else{
+            cout << A[i]->key << " ";
+        }
+    }
+    cout << A[A.size()-1]->key;
 
 }
 
