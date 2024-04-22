@@ -190,7 +190,7 @@ string Graph<D, K>::edge_class(K u, K v)
     Vertex* v1 = get(u);                                                                    //vertices to check the input's edge type
     Vertex* v2 = get(v);
 
-    if(v1 == nullptr || v2 == nullptr){return "no edge";}
+    if((v1 == nullptr || v2 == nullptr) || (v1 == v2)){return "no edge";}
 
     if (v2->pi == v1->key) {                                                                //tree edge, v2 is a direct descendant of v1
         return "tree edge";
