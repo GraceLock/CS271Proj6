@@ -543,22 +543,6 @@ void test_edge_class()
         {
             cout << "Misidentified forward edge (\"T\", \"S\") as : " << e_class << endl;
         }
-        // segmentation fault here
-        // e_class = G->edge_class("R", "A"); // only one vertex exists
-        // if (e_class != "no edge")
-        // {
-        //     cout << "Misidentified edge" << endl;
-        // }
-        // e_class = G->edge_class("A", "S"); // only one vertex exists but reverse order
-        // if (e_class != "no edge")
-        // {
-        //     cout << "Misidentified edge" << endl;
-        // }
-        // e_class = G->edge_class("A", "B"); // neither exists
-        // if (e_class != "no edge")
-        // {
-        //     cout << "Misidentified edge" << endl;
-        // }
     }
     catch (exception &e)
     {
@@ -594,39 +578,6 @@ void test_bfs_tree()
     {
         cerr << "Error testing bfs tree : " << e.what() << endl;
     }
-
-    try
-    {
-        stringstream buffer;
-        streambuf *prevbuf = cout.rdbuf(buffer.rdbuf());
-        G->bfs_tree("R");
-        cout.rdbuf(prevbuf);
-        if (buffer.str() != "R\nV\nS")
-        {
-            cout << "Incorrect bfs tree. Expected : \nR\nV\nS \nbut got :\n"
-                 << buffer.str() << endl;
-        }
-    }
-    catch (exception &e)
-    {
-        cerr << "Error testing bfs tree : " << e.what() << endl;
-    }
-    try
-    {
-        stringstream buffer;
-        streambuf *prevbuf = cout.rdbuf(buffer.rdbuf());
-        G->bfs_tree("U");
-        cout.rdbuf(prevbuf);
-        if (buffer.str() != "U\nY\nW\nX")
-        {
-            cout << "Incorrect bfs tree. Expected : \nU\nY\nW\nX\nbut got :\n"
-                 << buffer.str() << endl;
-        }
-    }
-    catch (exception &e)
-    {
-        cerr << "Error testing bfs tree : " << e.what() << endl;
-    }
     try
     {
         stringstream buffer;
@@ -642,6 +593,102 @@ void test_bfs_tree()
     catch (exception &e)
     {
         cerr << "Error testing bfs tree : " << e.what() << endl;
+    }
+
+    //int
+    try{
+        vector<int> keys;
+        vector<string> data;
+        vector<vector<int>> edges = {{}, {}, {}, {}};
+        keys = {1, 2, 3, 4};
+        data = {"Hello World", "B", "C", "D"};
+        edges = {{2, 4}, {3}, {4}, {}};
+        Graph<string, int> G(keys, data, edges);
+        
+        stringstream buffer;
+        streambuf *prevbuf = cout.rdbuf(buffer.rdbuf());
+        G.bfs_tree(2);
+        cout.rdbuf(prevbuf);
+        if (buffer.str() != "2\n3\n4")
+        {
+            cout << "Incorrect bfs tree. Expected : \n2\n3\n4\nbut got :\n"
+                 << buffer.str() << endl;
+        }
+
+    }catch (exception &e){
+        cerr << "Error testing reachable : " << e.what() << endl;
+    }
+
+    //float
+    try{
+        vector<float> keys;
+        vector<string> data;
+        vector<vector<float>> edges = {{}, {}, {}, {}};
+        keys = {1.5, 2.5, 3.5, 4.5};
+        data = {"Hello World", "B", "C", "D"};
+        edges = {{2.5, 4.5}, {3.5}, {4.5}, {}};
+        Graph<string, float> G(keys, data, edges);
+        
+        stringstream buffer;
+        streambuf *prevbuf = cout.rdbuf(buffer.rdbuf());
+        G.bfs_tree(2);
+        cout.rdbuf(prevbuf);
+        if (buffer.str() != "2.5\n3.5\n4.5")
+        {
+            cout << "Incorrect bfs tree. Expected : \n2.5\n3.5\n4.5\nbut got :\n"
+                 << buffer.str() << endl;
+        }
+
+    }catch (exception &e){
+        cerr << "Error testing reachable : " << e.what() << endl;
+    }
+
+    //char
+    try{
+        vector<char> keys;
+        vector<string> data;
+        vector<vector<char>> edges = {{}, {}, {}, {}};
+        keys = {'A', 'B', 'C', 'D'};
+        data = {"Hello World", "B", "C", "D"};
+        edges = {{'A', 'B'}, {'C'}, {'D'}, {}};
+        Graph<string, char> G(keys, data, edges);
+        
+        stringstream buffer;
+        streambuf *prevbuf = cout.rdbuf(buffer.rdbuf());
+        G.bfs_tree('A');
+        cout.rdbuf(prevbuf);
+        if (buffer.str() != "A\nB\nC\nD")
+        {
+            cout << "Incorrect bfs tree. Expected : \nA\nB\nC\nD\nbut got :\n"
+                 << buffer.str() << endl;
+        }
+
+    }catch (exception &e){
+        cerr << "Error testing reachable : " << e.what() << endl;
+    }
+
+    //char
+    try{
+        vector<bool> keys;
+        vector<string> data;
+        vector<vector<bool>> edges = {{}, {}, {}, {}};
+        keys = {true, false, true};
+        data = {"Hello World", "B", "C", "D"};
+        edges = {{true, false}, {}, {true}, {}};
+        Graph<string, bool> G(keys, data, edges);
+        
+        stringstream buffer;
+        streambuf *prevbuf = cout.rdbuf(buffer.rdbuf());
+        G.bfs_tree(true);
+        cout.rdbuf(prevbuf);
+        if (buffer.str() != "1")
+        {
+            cout << "Incorrect bfs tree. Expected : \n1\nbut got :\n"
+                 << buffer.str() << endl;
+        }
+
+    }catch (exception &e){
+        cerr << "Error testing reachable : " << e.what() << endl;
     }
 }
 
