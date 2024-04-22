@@ -1,200 +1,337 @@
 //
-//  test_graph_example.cpp
-//  CS 271 Graph Project: Example Test File
+//  test_graph.cpp
+//  CS 271 Graph Project: Test File
 //
-//  Created by Dr. Stacey Truex
+//  Created by Daniel Ziabicki, Grace Lock, William Nguyen
 //
 
 #include <fstream>
 #include <sstream>
 #include "graph.cpp"
 
-Graph<string, string> *generate_graph(string fname)
-{
-    string line;
-    ifstream infile(fname);
-    vector<string> keys;
-    vector<string> data;
-    vector<vector<string> > adjs;
-    if (infile.is_open())
-    {
-        while (getline(infile, line))
-        {
-            size_t delim = line.find(":");
-            string key = line.substr(0, delim);
-            string adj = line.substr(delim + 1);
+/*
+Edge Cases:
+- empty graph
+- call on existing key in graph
+- call on non-existent key
+*/
+void test_get(){
+    //int, string
+    try{
+        vector<string> keys;
+        vector<int> data;
+        vector<vector<string>> edges = {{}, {}, {}, {}};
+        Graph<int, string> G(keys, data, edges);
+        if(G.get("A") != nullptr){
+            cout << "Incorrect result getting vertex \"A\"" << endl;
+        }
 
-            keys.push_back(key);
-            data.push_back(key + " data");
-            delim = adj.find(",");
-            vector<string> adj_lst;
-            while (delim != string::npos)
-            {
-                adj_lst.push_back(adj.substr(0, delim));
-                adj = adj.substr(delim + 1);
-                delim = adj.find(",");
-            }
-            adj_lst.push_back(adj);
-            adjs.push_back(adj_lst);
+        keys = {"A", "B", "C", "D"};
+        data = {1, 2, 3, 4};
+        Graph<int, string> G1(keys, data, edges);
+        if(G1.get("A")->key != "A" && G1.get("A")->data != 1){
+            cout << "Incorrect result getting vertex \"A\"" << endl;
         }
-        infile.close();
-    }
-    Graph<string, string> *G = new Graph<string, string>(keys, data, adjs);
-    return G;
-}
+        if(G1.get("B")->key != "B" && G1.get("B")->data != 2){
+            cout << "Incorrect result getting vertex \"B\"" << endl;
+        }
 
-void test_get(Graph<string, string> *G)
-{
-    try
-    {
-        if (G->get("S") == nullptr || G->get("S")->data != "S data")
-        {
-            cout << "Incorrect result getting vertex \"s\"" << endl;
+        if(G1.get("E") != nullptr){
+            cout << "Incorrect result getting vertex \"E\"" << endl;
         }
-        if (G->get("a") != nullptr)
-        {
-            cout << "Incorrect result getting non-existant vertex \"a\"" << endl;
-        }
+        
+    }catch(exception &e){
+        cerr << "Error getting vertex from graph : " << e.what() << endl;
     }
-    catch (exception &e)
-    {
+
+    //string, int
+    try{
+        vector<int> keys;
+        vector<string> data;
+        vector<vector<int>> edges = {{}, {}, {}, {}};
+        Graph<string, int> G(keys, data, edges);
+        if(G.get(1) != nullptr){
+            cout << "Incorrect result getting vertex 1" << endl;
+        }
+
+        keys = {1, 2, 3, 4};
+        data = {"hello world", "apple", "robert", "green"};
+        Graph<string, int> G1(keys, data, edges);
+        if(G1.get(1)->key != 1 && G1.get(1)->data != "hello world"){
+            cout << "Incorrect result getting vertex 1" << endl;
+        }
+        if(G1.get(2)->key != 2 && G1.get(2)->data != "apple"){
+            cout << "Incorrect result getting vertex 2" << endl;
+        }
+        
+        if(G1.get(5) != nullptr){
+            cout << "Incorrect result getting vertex 5" << endl;
+        }
+        
+    }catch(exception &e){
+        cerr << "Error getting vertex from graph : " << e.what() << endl;
+    }
+
+    //float, char
+    try{
+        vector<char> keys;
+        vector<double> data;
+        vector<vector<char>> edges = {{}, {}, {}, {}};
+        Graph<double, char> G(keys, data, edges);
+
+        if(G.get('A') != nullptr){
+            cout << "Incorrect result getting vertex 'A'" << endl;
+        }
+
+        keys = {'A', 'B', 'C', 'D'};
+        data = {3.1415, 2.7182, 1.6180, -0.5};
+        Graph<double, char> G1(keys, data, edges);
+        if(G1.get('A')->key != 'A' && G1.get('A')->data != 3.1415){
+            cout << "Incorrect result getting vertex 'A'" << endl;
+        }
+        if(G1.get('B')->key != 'B' && G1.get('B')->data != 2.7182){
+            cout << "Incorrect result getting vertex 'B'" << endl;
+        }
+        
+        if(G1.get('E') != nullptr){
+            cout << "Incorrect result getting vertex 'E'" << endl;
+        }
+
+    }catch(exception &e){
         cerr << "Error getting vertex from graph : " << e.what() << endl;
     }
 }
 
-void test_reachable(Graph<string, string> *G)
-{
-    try
-    {
-        if (!G->reachable("R", "V"))
-        {
-            cout << "Incorrectly identified adjacent vertex \"V\" as unreachable from \"R\"" << endl;
+/*
+Edge Cases:
+- empty graph
+- both keys non-existent
+- one key exists
+- both keys exist, no connection between them
+- both keys exist, connection is one-way
+- both keys exist, connection is both ways
+*/
+void test_reachable(){
+    //int string
+    try{
+        vector<string> keys;
+        vector<int> data;
+        vector<vector<string>> edges = {{}, {}, {}, {}};
+        Graph<int, string> G(keys, data, edges);
+        if(G.reachable("R", "V")){
+            cerr << "huh" << endl;
         }
-        if (!G->reachable("X", "W"))
-        {
-            cout << "Incorrectly identified \"W\" as unreachable from \"X\"" << endl;
+        keys = {"Hello World", "B", "C", "D"};
+        data = {1, 2, 3, 4};
+        edges = {{"B", "D"}, {"C"}, {"D"}, {}};
+        Graph<int, string> G1(keys, data, edges);
+        if(!G1.reachable("Hello World", "B")){
+            cerr << "Should be reachable 1" << endl;
         }
-        if (G->reachable("S", "A"))
-        {
-            cout << "Incorrectly identified non-existant vetex \"A\" as reachable from \"S\"" << endl;
+        if(!G1.reachable("B", "C")){
+            cerr << "Should be reachable 2" << endl;
         }
+        if(G1.reachable("C", "B")){
+            cerr << "Should be not reachable 3" << endl;
+        }
+        if(G1.reachable("D", "B")){
+            cerr << "Should be not reachable 4" << endl;
+        }
+        if(G1.reachable("E", "B")){
+            cerr << "Should be not reachable 5" << endl;
+        }
+        if(!G1.reachable("B", "B")){
+            cerr << "Should be reachable 6" << endl;
+        }
+        if(G1.reachable("E", "E")){
+            cerr << "Should be not reachable 7" << endl;
+        }
+
+    }catch (exception &e){
+        cerr << "Error testing reachable : " << e.what() << endl;
     }
-    catch (exception &e)
-    {
+
+    //string int
+    try{
+        vector<int> keys;
+        vector<string> data;
+        vector<vector<int>> edges = {{}, {}, {}, {}};
+        Graph<string, int> G(keys, data, edges);
+        if(G.reachable(1, 2)){
+            cerr << "huh" << endl;
+        }
+        keys = {1, 2, 3, 4};
+        data = {"Hello World", "B", "C", "D"};
+        edges = {{2, 4}, {3}, {4}, {}};
+        Graph<string, int> G1(keys, data, edges);
+        if(!G1.reachable(1, 2)){
+            cerr << "Should be reachable 1" << endl;
+        }
+        if(!G1.reachable(2, 3)){
+            cerr << "Should be reachable 2" << endl;
+        }
+        if(G1.reachable(3, 2)){
+            cerr << "Should be not reachable 3" << endl;
+        }
+        if(G1.reachable(4, 2)){
+            cerr << "Should be not reachable 4" << endl;
+        }
+        if(G1.reachable(5, 2)){
+            cerr << "Should be not reachable 5" << endl;
+        }
+        if(!G1.reachable(2, 2)){
+            cerr << "Should be reachable 6" << endl;
+        }
+        if(G1.reachable(5, 5)){
+            cerr << "Should be not reachable 7" << endl;
+        }
+    }catch (exception &e){
+        cerr << "Error testing reachable : " << e.what() << endl;
+    }
+
+    //double char
+    try{
+        vector<char> keys;
+        vector<double> data;
+        vector<vector<char>> edges = {{}, {}, {}, {}};
+        Graph<double, char> G(keys, data, edges);
+        if(G.reachable(1, 2)){
+            cerr << "huh" << endl;
+        }
+        keys = {'A', 'B', 'C', 'D'};
+        data = {3.1415, 2.7182, 1.6180, -0.5};
+        edges = {{'A', 'B'}, {'C'}, {'D'}, {}};
+        Graph<double, char> G1(keys, data, edges);
+        if(!G1.reachable('A', 'B')){
+            cerr << "Should be reachable 1" << endl;
+        }
+        if(!G1.reachable('B', 'C')){
+            cerr << "Should be reachable 2" << endl;
+        }
+        if(G1.reachable('C', 'B')){
+            cerr << "Should be not reachable 3" << endl;
+        }
+        if(G1.reachable('D', 'B')){
+            cerr << "Should be not reachable 4" << endl;
+        }
+        if(G1.reachable('E', 'B')){
+            cerr << "Should be not reachable 5" << endl;
+        }
+        if(!G1.reachable('B', 'B')){
+            cerr << "Should be reachable 6" << endl;
+        }
+        if(G1.reachable('E', 'E')){
+            cerr << "Should be not reachable 7" << endl;
+        }
+    }catch (exception &e){
         cerr << "Error testing reachable : " << e.what() << endl;
     }
 }
 
-void test_bfs(Graph<string, string> *G)
-{
-    try
-    {
-        G->bfs("T");
-        string vertices[8] = {"V", "R", "S", "W", "T", "X", "U", "Y"};
-        int distances[8] = {3, 2, 1, 1, 0, 2, 1, 2};
-        for (int i = 0; i < 8; i++)
-        {
-            if (G->get(vertices[i]) == nullptr || G->get(vertices[i])->distance != distances[i])
-            {
-                cout << "Incorrect bfs result. Vertex " << vertices[i] << " should have distance " << distances[i] << " from source vertex \"t\"" << endl;
-            }
-        }
-    }
-    catch (exception &e)
-    {
-        cerr << "Error testing bfs : " << e.what() << endl;
-    }
-}
+/*
+Edge Cases:
+- empty graph
+- source key doesn't exist
+- cyclic graph
+- multiple isolated vertices
+- source key exists
+*/
+void test_bfs(){
+    //int string
+    try{
+        vector<string> keys;
+        vector<int> data;
+        vector<vector<string>> edges = {{}, {}, {}, {}};
+        Graph<int, string> G(keys, data, edges);
+        //empty test
 
-void test_print_path(Graph<string, string> *G)
-{
-    try
-    {
-        stringstream buffer;
-        streambuf *prevbuf = cout.rdbuf(buffer.rdbuf());
-        G->print_path("T", "V");
-        cout.rdbuf(prevbuf);
-        if (buffer.str() != "T -> S -> R -> V")
-        {
-            cout << "Incorrect path from vertex \"T\" to vertex \"V\". Expected: T -> S -> R -> V but got : " << buffer.str() << endl;
-        }
-    }
-    catch (exception &e)
-    {
-        cerr << "Error testing print path : " << e.what() << endl;
-    }
-}
+        keys = {"Hello World", "B", "C", "D"};
+        data = {1, 2, 3, 4};
+        edges = {{"B", "D"}, {"C"}, {"D"}, {}};
+        Graph<int, string> G1(keys, data, edges);
+        //more tests
 
-void test_edge_class(Graph<string, string> *G)
-{
-    try
-    {
-        string e_class = G->edge_class("R", "V"); // tree edge
-        if (e_class != "tree edge")
-        {
-            cout << "Misidentified tree edge (\"R\", \"V\") as : " << e_class << endl;
-        }
-        e_class = G->edge_class("X", "U"); // back edge
-        if (e_class != "back edge")
-        {
-            cout << "Misidentified back edge (\"X\", \"U\") as : " << e_class << endl;
-        }
-        e_class = G->edge_class("R", "U"); // no edge
-        if (e_class != "no edge")
-        {
-            cout << "Misidentified non-existant edge (\"R\", \"U\") as : " << e_class << endl;
-        }
-        e_class = G->edge_class("T", "W"); // forward edge
-        if (e_class != "forward edge")
-        {
-            cout << "Misidentified forward edge (\"T\", \"W\") as : " << e_class << endl;
-        }
-        e_class = G->edge_class("T", "S"); // cross edge
-        if (e_class != "cross edge")
-        {
-            cout << "Misidentified forward edge (\"T\", \"S\") as : " << e_class << endl;
-        }
+    }catch (exception &e){
+        cerr << "Error testing reachable : " << e.what() << endl;
     }
-    catch (exception &e)
-    {
-        cerr << "Error testing edge class : " << e.what() << endl;
+
+    //string int
+    try{
+        vector<int> keys;
+        vector<string> data;
+        vector<vector<int>> edges = {{}, {}, {}, {}};
+        Graph<string, int> G(keys, data, edges);
+        //empty test
+
+        keys = {1, 2, 3, 4};
+        data = {"Hello World", "B", "C", "D"};
+        edges = {{2, 4}, {3}, {4}, {}};
+        Graph<string, int> G1(keys, data, edges);
+        //more tests
+
+    }catch (exception &e){
+        cerr << "Error testing reachable : " << e.what() << endl;
+    }
+
+    //double char
+    try{
+        vector<char> keys;
+        vector<double> data;
+        vector<vector<char>> edges = {{}, {}, {}, {}};
+        Graph<double, char> G(keys, data, edges);
+        //empty test
+
+        keys = {'A', 'B', 'C', 'D'};
+        data = {3.1415, 2.7182, 1.6180, -0.5};
+        edges = {{'A', 'B'}, {'C'}, {'D'}, {}};
+        Graph<double, char> G1(keys, data, edges);
+        //more tests
+
+    }catch (exception &e){
+        cerr << "Error testing reachable : " << e.what() << endl;
     }
 }
 
-void test_bfs_tree(Graph<string, string> *G)
-{
-    try
-    {
-        stringstream buffer;
-        streambuf *prevbuf = cout.rdbuf(buffer.rdbuf());
-        G->bfs_tree("T");
-        cout.rdbuf(prevbuf);
-        if (buffer.str() != "T\nS U W\nR Y X\nV")
-        {
-            cout << "Incorrect bfs tree. Expected : \nT\nS U W\nR Y X\nV \nbut got :\n"
-                 << buffer.str() << endl;
-        }
-    }
-    catch (exception &e)
-    {
-        cerr << "Error testing bfs tree : " << e.what() << endl;
-    }
+/*
+Edge Cases:
+- empty graph
+- source and target are the same vertex
+- source doesn't exist, target exists and vice versa
+- neither exist
+- multiple paths
+*/
+void test_print_path(){
+
 }
 
-int main()
-{
+/*
+Edge Cases:
+- empty graph
+- one vertex doesn't exist
+- the other vertex doesn't exist
+- neither exist
+- source vertex == target vertex
+*/
+void test_edge_class(){
 
-    Graph<string, string> *G = generate_graph("graph_description.txt");
-    //test_get(G);
-    //test_reachable(G);
-    //test_bfs(G);
-    //test_print_path(G);
-    //test_edge_class(G);
-    test_bfs_tree(G);
+}
 
-    cout << "Testing completed" << endl;
+/*
+Edge Cases:
+- empty graph
+- all vertices are 1 away from source
+- only one vertex
+- source vertex not in graph
+- include isolated vertices
+*/
+void test_bfs_tree(){
 
-    delete G;
+}
 
+int main(){
+    test_get();
+    test_reachable();
+
+    cout << "Testing Completed" << endl;
     return 0;
 }

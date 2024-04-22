@@ -23,7 +23,6 @@ Graph<D, K>::Graph(vector<K> keys, vector<D> data, vector<vector<K> > edges)
         Vertex v;
         v.key = keys[i];
         v.data = data[i];
-        cout << data[i] << endl;
         v.color = false; // false for white
         v.distance = -1; // Distance from start vertex
         v.pi = K(); // Parent
@@ -67,11 +66,11 @@ template <class D, class K>
 bool Graph<D, K>::reachable(K u, K v)
 {
     bfs(u);
-
+    
     // Finding the vertices with keys u and v
     Vertex* startVertex = get(u);
     Vertex* targetVertex = get(v);
-    
+
     // If either startVertex or targetVertex is not found, return false
     if (startVertex == nullptr || targetVertex == nullptr) {
         return false;
@@ -93,6 +92,7 @@ template <class D, class K>
 void Graph<D, K>::bfs(K k)
 {
     Vertex* s = get(k);
+    if(s == nullptr){return;}
 
     for(int i = 0; i < vertices.size(); i++){
         vertices[i].color = false;
